@@ -85,10 +85,10 @@ describe('crawler spec', function () {
             });
         });
 
-        it ('should have one link', function () {
+        it ('should have three links', function () {
             expect(links.length).to.equal(3);
         });
-        
+
     });
 
 });

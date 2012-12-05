@@ -20,7 +20,6 @@ var crawler = {
             urls = urls.concat(extracted);
             callback(null, urls);
         }
-
     },
 
     _extractLinks: function (url, callback) {

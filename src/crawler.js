@@ -1,12 +1,24 @@
+var _ = require('underscore');
 var links = require('./links');
 
 var crawler = {
     initialize: function (request) {
         this.request = request;
-        // this.extractor = extractor;
     },
 
-    links: function (url, callback) {
+    links: function (url, options, callback) {
+        if (typeof options === 'function') {
+            callback = options;
+            options = {};
+        }
+
+        var all = [];
+        all.push(url);
+
+        this._extractLinks(url, all, callback);
+    },
+
+    _extractLinks: function (url, all, callback) {
         this.request(url, function (err, response, body) {
             if (err) {
                 return callback (err);
@@ -21,9 +33,19 @@ var crawler = {
                     return callback('extracting links from ' + url + ' failed.');
                 }
 
-                callback(null, extracted);
+                all = _.union(all, extracted);
+                callback(null, all);
             });
         });
+    },
+
+    _extractLinksRecursively: function (url, callback) {
+        // var me = this;
+
+        // me._extractLinks(url, function (err, extracted) {
+
+
+        // });
     }
 };
 

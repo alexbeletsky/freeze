@@ -1,7 +1,7 @@
 var crawler = require('../src/crawler');
 var expect = require('chai').expect;
 
-describe('crawler spec', function () {
+describe('links spec', function () {
 
     describe('response without any links', function () {
         var links;
@@ -89,6 +89,27 @@ describe('crawler spec', function () {
             expect(links.length).to.equal(3);
         });
 
+    });
+
+    describe ('contains href inside', function () {
+        var links;
+
+        beforeEach(function (done) {
+            var response = '<a href="test">test</a><a href="http://a.com/test">test</a>';
+
+            crawler(response, function (err, l) {
+                links = l;
+                done();
+            });
+        });
+
+        it ('should have href for first link', function () {
+            expect(links[0]).to.equal('test');
+        });
+
+        it ('should have href for second link', function () {
+            expect(links[1]).to.equal('http://a.com/test');
+        });
     });
 
 });

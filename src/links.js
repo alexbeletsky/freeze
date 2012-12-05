@@ -10,10 +10,6 @@ var extract = function (html, callback) {
         }
 
         var hrefs = window.document.getElementsByTagName('a');
-        if (_.isEmpty(hrefs)) {
-            return callback(null, []);
-        }
-
         var links = _.map(hrefs, function (href) {
             return href.getAttribute('href');
         });

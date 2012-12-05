@@ -12,13 +12,13 @@ var crawler = {
             options = {};
         }
 
-        var all = [];
-        all.push(url);
-
-        this._extractLinks(url, all, callback);
+        this._extracted = [url];
+        this._extractLinks(url, callback);
     },
 
-    _extractLinks: function (url, all, callback) {
+    _extractLinks: function (url, callback) {
+        var _extracted = this._extracted;
+
         this.request(url, function (err, response, body) {
             if (err) {
                 return callback (err);
@@ -33,8 +33,8 @@ var crawler = {
                     return callback('extracting links from ' + url + ' failed.');
                 }
 
-                all = _.union(all, extracted);
-                callback(null, all);
+                _extracted = _.union(_extracted, extracted);
+                callback(null, _extracted);
             });
         });
     },

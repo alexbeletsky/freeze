@@ -8,5 +8,6 @@
     , "chai": "*"
     , "jsdom": "*"
     , "underscore": "*"
+    , "request": "*"
   }
 }

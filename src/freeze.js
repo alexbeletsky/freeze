@@ -1,14 +1,9 @@
+var crawler = require('./crawler');
 
 function usage () {
     console.log('freeze - easy snapshot of dynamic web site.');
     console.log('Usage: freeze URL');
 }
-
-var extract = {
-    links: function (url, callback) {
-
-    }
-};
 
 var freezeApp = (function () {
 
@@ -30,7 +25,7 @@ var freezeApp = (function () {
         links.push(target);
 
         function extractLinks(url) {
-            var extractedLinks = extract.links(url, function (err, extracted) {
+            var extractedLinks = crawler.links(url, function (err, extracted) {
                 if (err) {
                     throw err;
                 }

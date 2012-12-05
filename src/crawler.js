@@ -12,13 +12,19 @@ var crawler = {
             options = {};
         }
 
-        this._extracted = [url];
-        this._extractLinks(url, callback);
+        this.root = url;
+        options.recursive ? this._extractLinksRecursively(url, _callback) : this._extractLinks(url, _callback);
+
+        var urls = [url];
+        function _callback(err, extracted) {
+            urls = urls.concat(extracted);
+            callback(null, urls);
+        }
+
     },
 
     _extractLinks: function (url, callback) {
-        var _extracted = this._extracted;
-
+        var me = this;
         this.request(url, function (err, response, body) {
             if (err) {
                 return callback (err);
@@ -33,19 +39,32 @@ var crawler = {
                     return callback('extracting links from ' + url + ' failed.');
                 }
 
-                _extracted = _.union(_extracted, extracted);
-                callback(null, _extracted);
+                callback(null, extracted);
             });
         });
     },
 
     _extractLinksRecursively: function (url, callback) {
-        // var me = this;
+        var me = this;
+        var memo = [];
 
-        // me._extractLinks(url, function (err, extracted) {
+        (function extract(url, callback) {
+            me._extractLinks(url, function (err, extracted) {
+                if (err) {
+                    return callback('extracting links from ' + url + ' failed.');
+                }
 
+                memo = memo.concat(extracted);
+                if (extracted.length === 0) {
+                    return callback(null, memo);
+                }
 
-        // });
+                _.each(extracted, function (url) {
+                    url = me.root + '/' + url;
+                    extract(url, callback);
+                });
+            });
+        })(url, callback);
     }
 };
 

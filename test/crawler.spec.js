@@ -100,20 +100,12 @@ describe('crawler specs', function () {
                 });
             });
 
+            it ('should extract all links', function  () {
+                expect(extractedLinks).to.be.ok;
+                expect(extractedLinks.length).to.equal(3);
+            });
+
         });
-
-    });
-
-    describe ('when crawling one page', function () {
-
-    });
-
-    describe ('when crawling recursivelly', function () {
-
-        // it ('should extract all links', function  () {
-        //     expect(extractedLinks).to.be.ok;
-        //     expect(extractedLinks.length).to.equal(2);
-        // });
 
     });
 

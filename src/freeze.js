@@ -1,13 +1,11 @@
 var crawler = require('./crawler');
 var request = require('request');
 
-function usage () {
-    console.log('freeze - easy snapshot of dynamic web site.');
-    console.log('Usage: freeze URL');
-}
+console.log('about to start');
 
 var freezeApp = (function () {
     var target = process.argv[2];
+    console.log(target);
     if (!target) {
         return usage();
     }
@@ -24,6 +22,8 @@ var freezeApp = (function () {
         if (err) {
             throw err;
         }
+
+        console.log(links);
     }
 
     // extract all web site assets links
@@ -35,3 +35,8 @@ var freezeApp = (function () {
     // dump content to the disk
 
 }());
+
+function usage () {
+    console.log('freeze - easy snapshot of dynamic web site.');
+    console.log('Usage: freeze URL');
+}

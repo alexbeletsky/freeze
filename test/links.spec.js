@@ -1,10 +1,10 @@
-var crawler = require('../src/crawler');
+var links = require('../src/links');
 var expect = require('chai').expect;
 
 describe('links spec', function () {
+    var extracted;
 
     describe('response without any links', function () {
-        var links;
 
         beforeEach(function (done) {
             var response = '\
@@ -16,21 +16,19 @@ describe('links spec', function () {
                 </body>\
             ';
 
-            crawler(response, function (err, l) {
-                links = l;
-
+            links.extract(response, function (err, l) {
+                extracted = l;
                 done();
             });
         });
 
         it ('should be links be empty', function () {
-            expect(links.length).to.equal(0);
+            expect(extracted.length).to.equal(0);
         });
 
     });
 
     describe('response with one link', function () {
-        var links;
 
         beforeEach(function (done) {
             var response = '\
@@ -45,20 +43,19 @@ describe('links spec', function () {
                 </body>\
             ';
 
-            crawler(response, function (e, l) {
-                links = l;
+            links.extract(response, function (e, l) {
+                extracted = l;
                 done();
             });
         });
 
         it ('should have one link', function () {
-            expect(links.length).to.equal(1);
+            expect(extracted.length).to.equal(1);
         });
     
     });
 
     describe ('response with few links', function () {
-        var links;
 
         beforeEach(function (done) {
             var response = '\
@@ -79,40 +76,39 @@ describe('links spec', function () {
                 </body>\
             ';
 
-            crawler(response, function (e, l) {
-                links = l;
+            links.extract(response, function (e, l) {
+                extracted = l;
                 done();
             });
         });
 
         it ('should have three links', function () {
-            expect(links.length).to.equal(3);
+            expect(extracted.length).to.equal(3);
         });
 
     });
 
     describe ('contains href inside', function () {
-        var links;
 
         beforeEach(function (done) {
             var response = '<a href="test">test</a><a href="http://a.com/test">test</a><a href="/blog/link-12">link</a>';
 
-            crawler(response, function (err, l) {
-                links = l;
+            links.extract(response, function (err, l) {
+                extracted = l;
                 done();
             });
         });
 
         it ('should have href for first link', function () {
-            expect(links[0]).to.equal('test');
+            expect(extracted[0]).to.equal('test');
         });
 
         it ('should have href for second link', function () {
-            expect(links[1]).to.equal('http://a.com/test');
+            expect(extracted[1]).to.equal('http://a.com/test');
         });
 
         it ('should have href for second link', function () {
-            expect(links[2]).to.equal('/blog/link-12');
+            expect(extracted[2]).to.equal('/blog/link-12');
         });
 
     });

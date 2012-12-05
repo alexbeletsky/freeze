@@ -1,7 +1,7 @@
 var jsdom = require('jsdom');
 var _ = require('underscore');
 
-module.exports = function (html, callback) {
+var extract = function (html, callback) {
     jsdom.env({
         html: html
     }, function (err, window) {
@@ -20,5 +20,8 @@ module.exports = function (html, callback) {
 
         callback (null, links);
     });
+};
 
+module.exports = {
+    extract: extract
 };

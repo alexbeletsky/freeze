@@ -95,7 +95,7 @@ describe('links spec', function () {
         var links;
 
         beforeEach(function (done) {
-            var response = '<a href="test">test</a><a href="http://a.com/test">test</a>';
+            var response = '<a href="test">test</a><a href="http://a.com/test">test</a><a href="/blog/link-12">link</a>';
 
             crawler(response, function (err, l) {
                 links = l;
@@ -110,6 +110,11 @@ describe('links spec', function () {
         it ('should have href for second link', function () {
             expect(links[1]).to.equal('http://a.com/test');
         });
+
+        it ('should have href for second link', function () {
+            expect(links[2]).to.equal('/blog/link-12');
+        });
+
     });
 
 });

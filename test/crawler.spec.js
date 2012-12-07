@@ -70,7 +70,7 @@ describe('crawler specs', function () {
             });
 
             it ('should have correct href', function () {
-                expect(extractedLinks[1]).to.equal('test.html');
+                expect(extractedLinks[1]).to.equal('http://target.com/test.html');
             });
         });
 
@@ -101,8 +101,12 @@ describe('crawler specs', function () {
             });
 
             it ('should extract all links', function  () {
-                expect(extractedLinks).to.be.ok;
                 expect(extractedLinks.length).to.equal(3);
+            });
+
+            it ('should extract all links with correct hrefs', function  () {
+                expect(extractedLinks[1]).to.equal('http://target.com/test.html');
+                expect(extractedLinks[2]).to.equal('http://target.com/test1.html');
             });
 
         });
@@ -139,8 +143,13 @@ describe('crawler specs', function () {
             });
 
             it ('should extract all links', function  () {
-                expect(extractedLinks).to.be.ok;
                 expect(extractedLinks.length).to.equal(4);
+            });
+
+            it ('should extract all links with correct hrefs', function  () {
+                expect(extractedLinks[1]).to.equal('http://target.com/test.html');
+                expect(extractedLinks[2]).to.equal('http://target.com/test1.html');
+                expect(extractedLinks[3]).to.equal('http://target.com/test2.html');
             });
 
         });
@@ -172,8 +181,12 @@ describe('crawler specs', function () {
             });
 
             it ('should extract all links', function  () {
-                expect(extractedLinks).to.be.ok;
                 expect(extractedLinks.length).to.equal(3);
+            });
+
+            it ('should extract all links with correct hrefs', function  () {
+                expect(extractedLinks[1]).to.equal('http://target.com/test.html');
+                expect(extractedLinks[2]).to.equal('http://target.com/test1.html');
             });
 
         });

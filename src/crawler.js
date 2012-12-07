@@ -44,73 +44,41 @@ var crawler = {
                     return callback('extracting links from ' + url + ' failed.');
                 }
 
+                extracted = _.map(extracted, qualify);
+
                 callback(null, extracted);
+
+                function qualify (e) {
+                    return urls.qualify(me.root, e);
+                }
+
             });
         });
     },
 
     _extractLinksRecursively: function (targetUrl, callback) {
         var me = this;
-        var toCrawl = [targetUrl];
+        var toCrawl = [];
         var memo = [];
 
-        (function _extract() {
-            var url = toCrawl.pop();
-            if (url) {
+        (function _recursiveExtract(url) {
+            url ? extractFromUrl (url) : callback (null, memo);
+
+            function extractFromUrl () {
                 me._extractLinks(url, function (err, extracted) {
                     if (err) {
                         return callback('extracting links from ' + url + ' failed.');
                     }
 
-
-                    extracted = _.map(extracted, function (e) {
-                        return urls.qualify(me.root, e);
-                    });
-
                     toCrawl = _.union(toCrawl, extracted);
                     memo = _.union(memo, toCrawl);
 
-                    _extract();
+                    _recursiveExtract(toCrawl.pop());
                 });
-            } else {
-                callback(null, memo);
             }
-        })();
-
-        // var url = toCrawl.pop();
-        // if (url) {
-        //     extract(url, function (err, extracted) {
-        //         if (err) {
-        //             callback(err);
-        //         }
 
 
-        //     });
-        // } else {
-        //     callback(null, memo);
-        // }
-
-
-
-
-        // function extract(url, callback) {
-        //     me._extractLinks(url, function (err, extracted) {
-        //         if (err) {
-        //             return callback('extracting links from ' + url + ' failed.');
-        //         }
-
-        //         if (extracted.length === 0) {
-        //             return callback(null, memo);
-        //         }
-
-        //         memo = memo.concat(extracted);
-
-        //         // _.each(extracted, function (url) {
-        //         //     url = urls.qualify(me.root, url);
-        //         //     extract(url, callback);
-        //         // });
-        //     });
-        // };
+        })(targetUrl);
     }
 };
 

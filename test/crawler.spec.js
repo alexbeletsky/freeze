@@ -107,6 +107,39 @@ describe('crawler specs', function () {
 
         });
 
+        describe('with fully qualified links', function () {
+
+            beforeEach(function () {
+                request = function (url, callback) {
+                    if (url === 'http://target.com') {
+                        return callback(null, { statusCode: 200 }, '<a href="http://target.com/test.html">link</a>');
+                    }
+
+                    if (url === 'http://target.com/test.html') {
+                        return callback(null, { statusCode: 200 }, '<a href="http://target.com/test1.html">link</a>');
+                    }
+
+                    if (url === 'http://target.com/test1.html') {
+                        return callback(null, { statusCode: 200 }, '<body></body>');
+                    }
+                };
+            });
+
+            beforeEach(function (done) {
+                crawler.initialize(request);
+                crawler.links('http://target.com', { recursive: true }, function (err, links) {
+                    extractedLinks = links;
+                    done();
+                });
+            });
+
+            it ('should extract all links', function  () {
+                expect(extractedLinks).to.be.ok;
+                expect(extractedLinks.length).to.equal(3);
+            });
+
+        });
+
     });
 
 });

@@ -14,13 +14,16 @@ var crawler = {
         }
 
         this.root = url;
-        options.recursive ? this._extractLinksRecursively(url, _callback) : this._extractLinks(url, _callback);
+        this.options = options;
+
+        this.options.recursive ? this._extractLinksRecursively(url, _callback) : this._extractLinks(url, _callback);
 
         var extractedUrls = [url];
         function _callback(err, extracted) {
             if (err) {
                 return callback(err);
             }
+
 
             extractedUrls = extractedUrls.concat(extracted);
             callback(null, extractedUrls);
@@ -62,9 +65,14 @@ var crawler = {
         var memo = [];
 
         (function _recursiveExtract(url) {
-            url ? extractFromUrl (url) : callback (null, memo);
+            url ? extractFromUrl () : callback (null, memo);
 
             function extractFromUrl () {
+                if (me.options.skipExternal && urls.isExternal(me.root, url)) {
+                    memo = _.without(memo, url);
+                    _recursiveExtract(toCrawl.pop());
+                }
+
                 me._extractLinks(url, function (err, extracted) {
                     if (err) {
                         return callback('extracting links from ' + url + ' failed.');

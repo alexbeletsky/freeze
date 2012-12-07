@@ -9,5 +9,8 @@
     , "jsdom": "*"
     , "underscore": "*"
     , "request": "*"
+  }, "scripts": {
+    "test": "mocha --reporter spec",
+    "test-watch": "mocha --reporter spec --watch"
   }
 }

@@ -18,6 +18,10 @@ var crawler = {
 
         var urls = [url];
         function _callback(err, extracted) {
+            if (err) {
+                return callback(err);
+            }
+
             urls = urls.concat(extracted);
             callback(null, urls);
         }
@@ -25,6 +29,7 @@ var crawler = {
 
     _extractLinks: function (url, callback) {
         var me = this;
+
         this.request(url, function (err, response, body) {
             if (err) {
                 return callback (err);
@@ -54,10 +59,11 @@ var crawler = {
                     return callback('extracting links from ' + url + ' failed.');
                 }
 
-                memo = memo.concat(extracted);
                 if (extracted.length === 0) {
                     return callback(null, memo);
                 }
+
+                memo = memo.concat(extracted);
 
                 _.each(extracted, function (url) {
                     url = urls.qualify(me.root, url);

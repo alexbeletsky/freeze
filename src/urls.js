@@ -11,6 +11,10 @@ var urls = {
         }
 
         return root + link;
+    },
+
+    isExternal: function (root, link) {
+        return link.indexOf(root) !== 0;
     }
 };
 

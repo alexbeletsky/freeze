@@ -90,6 +90,45 @@ describe('url.js spec', function () {
 
         });
 
+        describe('when checking external urls', function () {
+            var result;
+
+            describe('for local urls', function () {
+
+                beforeEach(function () {
+                    root = 'http://a.com';
+                    link = 'http://a.com/link';
+                });
+
+                beforeEach(function () {
+                    result = urls.isExternal(root, link);
+                });
+
+                it('should return false', function () {
+                    expect(result).to.be.false;
+                });
+
+            });
+
+            describe('for external urls', function () {
+
+                beforeEach(function () {
+                    root = 'http://a.com';
+                    link = 'http://b.com/link';
+                });
+
+                beforeEach(function () {
+                    result = urls.isExternal(root, link);
+                });
+
+                it('should return true', function () {
+                    expect(result).to.be.true;
+                });
+
+            });
+
+        });
+
     });
 
 });

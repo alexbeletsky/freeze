@@ -13,15 +13,16 @@ describe('url.js spec', function () {
     });
 
     describe('when qualifying url', function () {
-        var root;
+        var root, link;
 
         describe('for relative urls', function () {
             beforeEach(function () {
                 root = 'http://a.com';
+                link = 'link';
             });
 
             beforeEach(function () {
-                url = urls.qualify('http://a.com', 'link');
+                url = urls.qualify(root, link);
             });
 
             it('should created fully qualifed link', function () {
@@ -36,10 +37,11 @@ describe('url.js spec', function () {
 
                 beforeEach(function () {
                     root = 'http://a.com/';
+                    link = 'link';
                 });
 
                 beforeEach(function () {
-                    url = urls.qualify(root, 'link');
+                    url = urls.qualify(root, link);
                 });
 
                 it('should created fully qualifed link', function () {
@@ -48,6 +50,40 @@ describe('url.js spec', function () {
 
                 it('should not change original root', function () {
                     expect(root).to.equal('http://a.com/');
+                });
+
+            });
+
+        });
+
+        describe('for absolute urls', function () {
+
+            beforeEach(function () {
+                root = 'http://a.com';
+                link = 'http://a.com/link';
+            });
+
+            beforeEach(function () {
+                url = urls.qualify(root, link);
+            });
+
+            it('should create fully qualifed link', function () {
+                expect(url).to.equal('http://a.com/link');
+            });
+
+            describe('when link has a different root', function () {
+
+                beforeEach(function () {
+                    root = 'http://a.com';
+                    link = 'http://b.com/link';
+                });
+
+                beforeEach(function () {
+                    url = urls.qualify(root, link);
+                });
+
+                it('should create fully qualifed link', function () {
+                    expect(url).to.equal('http://b.com/link');
                 });
 
             });

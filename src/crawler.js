@@ -1,5 +1,6 @@
 var _ = require('underscore');
 var links = require('./links');
+var urls = require('./urls');
 
 var crawler = {
     initialize: function (request) {
@@ -59,7 +60,7 @@ var crawler = {
                 }
 
                 _.each(extracted, function (url) {
-                    url = me.root + '/' + url;
+                    url = urls.qualify(me.root, url);
                     extract(url, callback);
                 });
             });

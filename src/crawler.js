@@ -16,14 +16,14 @@ var crawler = {
         this.root = url;
         options.recursive ? this._extractLinksRecursively(url, _callback) : this._extractLinks(url, _callback);
 
-        var urls = [url];
+        var extractedUrls = [url];
         function _callback(err, extracted) {
             if (err) {
                 return callback(err);
             }
 
-            urls = urls.concat(extracted);
-            callback(null, urls);
+            extractedUrls = extractedUrls.concat(extracted);
+            callback(null, extractedUrls);
         }
     },
 
@@ -49,28 +49,68 @@ var crawler = {
         });
     },
 
-    _extractLinksRecursively: function (url, callback) {
+    _extractLinksRecursively: function (targetUrl, callback) {
         var me = this;
+        var toCrawl = [targetUrl];
         var memo = [];
 
-        (function extract(url, callback) {
-            me._extractLinks(url, function (err, extracted) {
-                if (err) {
-                    return callback('extracting links from ' + url + ' failed.');
-                }
+        (function _extract() {
+            var url = toCrawl.pop();
+            if (url) {
+                me._extractLinks(url, function (err, extracted) {
+                    if (err) {
+                        return callback('extracting links from ' + url + ' failed.');
+                    }
 
-                if (extracted.length === 0) {
-                    return callback(null, memo);
-                }
 
-                memo = memo.concat(extracted);
+                    extracted = _.map(extracted, function (e) {
+                        return urls.qualify(me.root, e);
+                    });
 
-                _.each(extracted, function (url) {
-                    url = urls.qualify(me.root, url);
-                    extract(url, callback);
+                    toCrawl = _.union(toCrawl, extracted);
+                    memo = _.union(memo, toCrawl);
+
+                    _extract();
                 });
-            });
-        })(url, callback);
+            } else {
+                callback(null, memo);
+            }
+        })();
+
+        // var url = toCrawl.pop();
+        // if (url) {
+        //     extract(url, function (err, extracted) {
+        //         if (err) {
+        //             callback(err);
+        //         }
+
+
+        //     });
+        // } else {
+        //     callback(null, memo);
+        // }
+
+
+
+
+        // function extract(url, callback) {
+        //     me._extractLinks(url, function (err, extracted) {
+        //         if (err) {
+        //             return callback('extracting links from ' + url + ' failed.');
+        //         }
+
+        //         if (extracted.length === 0) {
+        //             return callback(null, memo);
+        //         }
+
+        //         memo = memo.concat(extracted);
+
+        //         // _.each(extracted, function (url) {
+        //         //     url = urls.qualify(me.root, url);
+        //         //     extract(url, callback);
+        //         // });
+        //     });
+        // };
     }
 };
 

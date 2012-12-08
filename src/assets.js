@@ -1,10 +1,8 @@
 var assets = {
-    initialize: function (request) {
-        this.request = request;
-    },
+    extract: function (html, callback) {
+        var assets = { js: [], css: [] };
 
-    extract: function (url, callback) {
-        callback (null, {});
+        callback (null, assets);
     }
 
 };

@@ -3,17 +3,7 @@ var assets = require('../src/assets');
 
 describe('assets.js spec', function () {
 
-    var request, extracted;
-
-    beforeEach(function () {
-        request = function (url, callback) {
-            callback ();
-        };
-    });
-
-    beforeEach (function () {
-        assets.initialize(request);
-    });
+    var html, extracted;
 
     it ('should exist', function () {
         expect(assets).to.be.ok;
@@ -21,10 +11,14 @@ describe('assets.js spec', function () {
 
     describe('when extracting assets', function () {
 
-        describe('from one page', function () {
+        describe('empty html', function () {
+
+            beforeEach(function () {
+                html = '';
+            });
 
             beforeEach(function (done) {
-                assets.extract('http://target.com', function (err, extractedAssets) {
+                assets.extract(html, function (err, extractedAssets) {
                     extracted = extractedAssets;
                     done();
                 });

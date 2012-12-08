@@ -59,6 +59,31 @@ describe('assets.js spec', function () {
 
         });
 
+        describe('extracting css references', function () {
+
+            beforeEach(function () {
+                html = '<html>\
+                    <head>\
+                        <link rel="stylesheet" type="text/css" href="http://target.com/css/style.css"/>\
+                    </head>\
+                    <body>\
+                    </body>\
+                ';
+            });
+
+            beforeEach(function (done) {
+                assets.extract(html, function (err, extractedAssets) {
+                    extracted = extractedAssets;
+                    done();
+                });
+            });
+
+            it ('should extract js reference', function () {
+                expect(extracted.css[0]).to.equal('http://target.com/css/style.css');
+            });
+
+        });
+
     });
 
 });

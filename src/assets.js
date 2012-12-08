@@ -17,8 +17,14 @@ var assets = {
                 return script.getAttribute('src');
             });
 
-            assets.js = _.union(assets.js, js);
+            var styles = window.document.getElementsByTagName('link');
+            var css = _.map(styles, function (style) {
+                return style.getAttribute('href');
+            });
 
+            assets.js = _.union(assets.js, js);
+            assets.css = _.union(assets.css, css);
+            
             callback (null, assets);
         });
     }

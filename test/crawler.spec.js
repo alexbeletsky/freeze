@@ -228,6 +228,44 @@ describe('crawler specs', function () {
 
         });
 
+        describe('with circular loops', function () {
+
+            beforeEach(function () {
+                request = function (url, callback) {
+                    if (url === 'http://target.com') {
+                        return callback(null, { statusCode: 200 }, '<a href="test.html">link</a>');
+                    }
+
+                    if (url === 'http://target.com/test.html') {
+                        return callback(null, { statusCode: 200 }, '<a href="test1.html">link</a><');
+                    }
+
+                    if (url === 'http://target.com/test1.html') {
+                        return callback(null, { statusCode: 200 }, '<a href="test.html">link</a>');
+                    }
+                };
+            });
+
+            beforeEach(function (done) {
+                crawler.initialize(request);
+                crawler.links('http://target.com', { recursive: true, skipExternal: true }, function (err, links) {
+                    extractedLinks = links;
+                    done();
+                });
+            });
+
+            it ('should extract all links', function  () {
+                expect(extractedLinks.length).to.equal(3);
+            });
+
+            it ('should extract all links with correct hrefs', function  () {
+                expect(extractedLinks[1]).to.equal('http://target.com/test.html');
+                expect(extractedLinks[2]).to.equal('http://target.com/test1.html');
+            });
+
+        });
+
+
     });
 
 });

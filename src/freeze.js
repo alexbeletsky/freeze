@@ -1,11 +1,8 @@
 var crawler = require('./crawler');
 var request = require('request');
 
-console.log('about to start');
-
 var freezeApp = (function () {
     var target = process.argv[2];
-    console.log(target);
     if (!target) {
         return usage();
     }
@@ -15,7 +12,7 @@ var freezeApp = (function () {
 
     function extractAllLinks(target, callback) {
         crawler.initialize(request);
-        crawler.links(target, { recursive: true }, allLinksExtracted);
+        crawler.links(target, { recursive: true, log: true }, allLinksExtracted);
     }
 
     function allLinksExtracted (err, links) {

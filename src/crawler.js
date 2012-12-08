@@ -4,6 +4,8 @@ var urls = require('./urls');
 
 var crawler = {
     initialize: function (request) {
+        _.bindAll(this);
+
         this.request = request;
     },
 
@@ -49,6 +51,8 @@ var crawler = {
 
                 extracted = _.map(extracted, qualify);
 
+                me._log('processsed url: ' + url + ' extracted ' + extracted.length + ' links');
+
                 callback(null, extracted);
 
                 function qualify (e) {
@@ -70,11 +74,15 @@ var crawler = {
 
             function extractFromUrl () {
                 if (me.options.skipExternal && urls.isExternal(me.root, url)) {
+                    me._log ('skipping ' + url + ' as external');
+
                     memo = _.without(memo, url);
                     return _recursiveExtract(toCrawl.pop());
                 }
 
                 if (_.contains(crawled, url)) {
+                    me._log ('skipping ' + url + ' as already crawled');
+                    
                     return _recursiveExtract(toCrawl.pop());
                 }
 
@@ -92,11 +100,17 @@ var crawler = {
             }
 
             function extractionCompleted() {
+                me._log('crawling completed, ' + memo.length + ' links extracted');
+
                 callback(null, memo);
             }
 
 
         })(targetUrl);
+    },
+
+    _log: function (message) {
+        this.options.log && console.log(message);
     }
 };
 

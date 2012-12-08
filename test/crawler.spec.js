@@ -25,7 +25,7 @@ describe('crawler specs', function () {
 
     });
 
-    describe('when crawling', function () {
+    describe('when crawling links', function () {
         var extractedLinks;
 
         describe('any page', function () {

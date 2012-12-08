@@ -14,7 +14,7 @@ describe('assets.js spec', function () {
         describe('empty html', function () {
 
             beforeEach(function () {
-                html = '';
+                html = '<html></html>';
             });
 
             beforeEach(function (done) {
@@ -29,7 +29,32 @@ describe('assets.js spec', function () {
             });
 
             it ('should contain css', function () {
-                expect(extracted.js).to.be.ok;
+                expect(extracted.css).to.be.ok;
+            });
+
+        });
+
+        describe('extracting js references', function () {
+
+            beforeEach(function () {
+                html = '<html>\
+                    <head>\
+                        <script type="text/javascript" src="http://target.com/js/script.js"></script>\
+                    </head>\
+                    <body>\
+                    </body>\
+                ';
+            });
+
+            beforeEach(function (done) {
+                assets.extract(html, function (err, extractedAssets) {
+                    extracted = extractedAssets;
+                    done();
+                });
+            });
+
+            it ('should extract js reference', function () {
+                expect(extracted.js[0]).to.equal('http://target.com/js/script.js');
             });
 
         });

@@ -24,7 +24,7 @@ describe('assets.js spec', function () {
         describe('from one page', function () {
 
             beforeEach(function (done) {
-                assets.get('http://target.com', function (err, extractedAssets) {
+                assets.extract('http://target.com', function (err, extractedAssets) {
                     extracted = extractedAssets;
                     done();
                 });

@@ -1,23 +1,23 @@
 var jsdom = require('jsdom');
 var _ = require('underscore');
 
-var extract = function (html, callback) {
-    jsdom.env({
-        html: html
-    }, function (err, window) {
-        if (err) {
-            return callback (err);
-        }
+var links = {
+    extract: function (html, callback) {
+        jsdom.env({
+            html: html
+        }, function (err, window) {
+            if (err) {
+                return callback (err);
+            }
 
-        var hrefs = window.document.getElementsByTagName('a');
-        var links = _.map(hrefs, function (href) {
-            return href.getAttribute('href');
+            var hrefs = window.document.getElementsByTagName('a');
+            var links = _.map(hrefs, function (href) {
+                return href.getAttribute('href');
+            });
+
+            callback (null, links);
         });
-
-        callback (null, links);
-    });
+    }
 };
 
-module.exports = {
-    extract: extract
-};
+module.exports = links;

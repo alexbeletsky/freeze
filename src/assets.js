@@ -3,7 +3,7 @@ var assets = {
         this.request = request;
     },
 
-    get: function (url, callback) {
+    extract: function (url, callback) {
         callback (null, {});
     }
 

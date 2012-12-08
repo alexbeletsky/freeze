@@ -15,6 +15,10 @@ var urls = {
 
     isExternal: function (root, link) {
         return link.indexOf(root) !== 0;
+    },
+
+    toFile: function (ulr) {
+        return 'index.html';
     }
 };
 

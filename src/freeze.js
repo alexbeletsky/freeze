@@ -8,20 +8,6 @@ var freezeApp = (function () {
     }
 
     // extract all internal links
-    extractAllLinks(target, allLinksExtracted);
-
-    function extractAllLinks(target, callback) {
-        crawler.initialize(request);
-        crawler.links(target, { recursive: true, log: true }, allLinksExtracted);
-    }
-
-    function allLinksExtracted (err, links) {
-        if (err) {
-            throw err;
-        }
-
-        console.log(links);
-    }
 
     // extract all web site assets links
 
@@ -29,7 +15,7 @@ var freezeApp = (function () {
 
     // dump assests to the disk
 
-    // dump content to the disk
+    // fix related link
 
 }());
 

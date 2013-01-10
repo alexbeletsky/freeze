@@ -1,4 +1,5 @@
 var fs = require('fs');
+var rmdir = require('rmdir');
 var request = require('request');
 
 var expect = require('chai').expect;
@@ -13,12 +14,19 @@ describe('dump.js #integration', function () {
         testFolder = __dirname + '/_freeze';
     });
 
-    beforeEach(function () {
-        //fs.mkdirSync(testFolder);
+    beforeEach(function (done) {
+        fs.mkdir(testFolder, function () {
+            done();
+        });
     });
 
-    afterEach(function () {
-        //fs.rmdirSync(testFolder);
+    afterEach(function (done) {
+        rmdir(testFolder, function (err) {
+            if (err) {
+                console.log(err);
+            }
+            done();
+        });
     });
 
     it ('should exist', function () {
@@ -33,25 +41,16 @@ describe('dump.js #integration', function () {
         });
 
         describe ('dumping root url', function () {
-
             beforeEach (function (done) {
                 dump.toFileSystem(testFolder, ['http://www.udacity.com/cs101x/index.html'], function (err, results) {
-                    if (err) {
-                        throw err;
-                    }
-
                     dumpResults = results;
                     done();
                 });
             });
 
             it ('should index file created', function () {
-                expect(fs.statSync(testFolder + '/index.html').isFile()).to.be.true;
+                expect(fs.statSync(testFolder + '/index.html').isFile()).to.be.ok;
             });
-
         });
-
-
     });
-
 });

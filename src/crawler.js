@@ -26,7 +26,6 @@ var crawler = {
                 return callback(err);
             }
 
-
             extractedUrls = extractedUrls.concat(extracted);
             callback(null, extractedUrls);
         }

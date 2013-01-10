@@ -19,10 +19,6 @@ var dump = {
                     callback(null, { url: link, path: path});
                 });
 
-                stream.on('end', function () {
-                    callback(null, { url: link, path: path});
-                });
-
                 stream.on('error', function (err) {
                     callback(err);
                 });
